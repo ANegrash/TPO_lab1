@@ -19,11 +19,9 @@ public class Sec {
         else if (x > 270)
             x = 90 - (x - 270);
 
-
         rad = deg2rad(x);
-        for (int i = 1; i <= 14; i++) {
+        for (int i = 1; i <= 14; i++)
             result = result + ((Math.pow(-1, i)) * (Math.pow(rad, 2 * i)) / getFactorial(2 * i));
-        }
         result = 1 / result;
         return isMinus ? (-1 * result) : result;
     }
