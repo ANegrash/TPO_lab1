@@ -15,6 +15,16 @@ public class BTree {
         }
     }
 
+    public void addArray(int[] array) {
+        if (array != null) {
+            for (int item: array) {
+                add(item);
+            }
+        } else {
+            System.out.println("Error: null array");
+        }
+    }
+
     public void add(int value) {
         addUtil(head, null, value);
     }
@@ -39,22 +49,6 @@ public class BTree {
         }
     }
 
-    public void print() {
-        printUtil(head, 0, 0);
-    }
-
-    void printUtil(TreeNode t, int c, int lvl) {
-        int shift = 20;
-        if (t == null)
-            return;
-        for (int i = 0; i < c+shift; i++)
-            System.out.print(" ");
-        System.out.println(t.data);
-        lvl += 2;
-        printUtil(t.left, c - 10 + (lvl), lvl);
-        printUtil(t.right, c + 10 - (lvl), lvl);
-    }
-
     public void delete(int value) {
         if (delNode(head, value))
             System.out.println("Deleted node: " + value);
@@ -62,11 +56,11 @@ public class BTree {
             System.out.println("Node \"" + value + "\" not found");
     }
 
-    public void find(int value) {
-        findUtil(head, value);
+    public String find(int value) {
+        return findUtil(head, value);
     }
 
-    void findUtil(TreeNode t, int value) {
+    String findUtil(TreeNode t, int value) {
         String path = "" + value;
         while (t != null) {
             if (t.data > value)
@@ -78,14 +72,13 @@ public class BTree {
         }
 
         if (t == null)
-            System.out.println("We can't find this element");
+            return "This element doesn't exist.";
         else {
             while (t.parent != null) {
                 path = t.parent.data + " -> " + path;
                 t = t.parent;
             }
-            path = "Path to element: " + path;
-            System.out.println(path);
+            return path;
         }
     }
 
@@ -125,5 +118,37 @@ public class BTree {
         if (t.right != null)
             t = t.right;
         return t.data;
+    }
+
+    int maxHeight(TreeNode t) {
+        if (t == null)
+            return 0;
+        else {
+            int lHeight = maxHeight(t.left);
+            int rHeight = maxHeight(t.right);
+            if (lHeight > rHeight)
+                return lHeight + 1;
+            else
+                return rHeight + 1;
+        }
+    }
+
+    public String levelOrder() {
+        String result = "";
+        int height = maxHeight(head);
+        for (int i = 1; i <= height; i++)
+            result += "" + i + ": " + levelOrderUtil(head, i) + "\n";
+        return result;
+    }
+
+    String levelOrderUtil(TreeNode t, int lvl) {
+        if (t == null)
+            return "";
+        if (lvl == 1)
+            return t.data + " ";
+        else {
+            return levelOrderUtil(t.left, lvl-1) + levelOrderUtil(t.right, lvl-1);
+        }
+
     }
 }
