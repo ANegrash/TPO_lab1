@@ -1,7 +1,7 @@
 package work.story;
 
 public class Riches {
-    private final int quantity;
+    private int quantity;
 
     public Riches(int quantity) {
         this.quantity = quantity;
@@ -11,6 +11,10 @@ public class Riches {
         Action act = new Action(action);
         return countRiches() + "богатства " + act.getAction();
     }
+
+     public void setQuantity(int q) {
+        this.quantity = q;
+     }
 
     private String countRiches(){
         if (quantity < 10)
