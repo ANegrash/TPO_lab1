@@ -6,6 +6,7 @@ public class Sec {
         double result = 1, rad;
 
         x = x % 360;
+        if (x < 0) x = -x;
         if (x == 90)
             return Double.POSITIVE_INFINITY;
         else if (x > 90 && x <= 180) {
