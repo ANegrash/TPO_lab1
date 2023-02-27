@@ -10,7 +10,7 @@ public class BTreeTests {
     @Test
     public void checkEmptyTree() {
         BTree t = new BTree();
-        assertEquals("", t.levelOrder());
+        assertEquals("The tree is empty", t.levelOrder());
     }
 
     @Test
@@ -65,5 +65,43 @@ public class BTreeTests {
         assertEquals(expected, t.levelOrder());
         String expectedSearchResult = "This element doesn't exist.";
         assertEquals(expectedSearchResult, t.find(8));
+    }
+
+    @Test
+    public void checkSameElementsInTree() {
+        BTree t = new BTree();
+        int[] arr = {1, 0, 1};
+        t.addArray(arr);
+        assertEquals("1: 1 \n2: 0 1 \n", t.levelOrder());
+    }
+
+    @Test
+    public void checkNullInTree() {
+        BTree t = new BTree();
+        t.add(null);
+        t.add(null);
+        t.add(null);
+        assertEquals("The tree is empty", t.levelOrder());
+        String[] arr = {null, null, null};
+        t.addArray(arr);
+        assertEquals("The tree is empty", t.levelOrder());
+    }
+
+    @Test
+    public void checkAddingString() {
+        BTree t = new BTree();
+        t.add("String element");
+        assertEquals("1: String element \n", t.levelOrder());
+    }
+
+    @Test
+    public void checkStringsInTree() {
+        BTree t = new BTree();
+        String[] arr = {"d", "b", "a", "c", "g", "f", "h"};
+        t.addArray(arr);
+        String expected =   "1: d \n" +
+                            "2: b g \n" +
+                            "3: a c f h \n";
+        assertEquals(expected, t.levelOrder());
     }
 }

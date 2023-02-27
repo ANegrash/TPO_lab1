@@ -5,12 +5,14 @@ public class BTree {
 
     private static class TreeNode {
         int data;
+        String dataString;
         TreeNode parent;
         TreeNode left;
         TreeNode right;
 
-        public TreeNode(int data, TreeNode parent) {
+        public TreeNode(int data, String str, TreeNode parent) {
             this.data = data;
+            this.dataString = str;
             this.parent = parent;
         }
     }
@@ -25,27 +27,74 @@ public class BTree {
         }
     }
 
+    public void addArray(String[] array) {
+        if (array != null) {
+            for (String item: array) {
+                add(item);
+            }
+        } else {
+            System.out.println("Error: null array");
+        }
+    }
+
     public void add(int value) {
         addUtil(head, null, value);
     }
 
+    public void add(String value) {
+        if (value != null)
+            addUtil(head, null, value);
+    }
+
     void addUtil(TreeNode t, TreeNode parent, int value) {
         if (head == null)
-            head = new TreeNode(value, parent);
+            head = new TreeNode(value, value+"", parent);
         else {
             if (t.data > value) {
                 if (t.left == null) {
-                    t.left = new TreeNode(value, t);
+                    t.left = new TreeNode(value, value+"", t);
                     return;
                 }
                 addUtil(t.left, t, value);
             } else {
                 if (t.right == null) {
-                    t.right = new TreeNode(value, t);
+                    t.right = new TreeNode(value, value+"", t);
                     return;
                 }
                 addUtil(t.right, t, value);
             }
+        }
+    }
+
+    void addUtil(TreeNode t, TreeNode parent, String value) {
+        int intData = str2int(value);
+        if (head == null)
+            head = new TreeNode(intData, value, parent);
+        else {
+            if (t.data > intData) {
+                if (t.left == null) {
+                    t.left = new TreeNode(intData, value, t);
+                    return;
+                }
+                addUtil(t.left, t, value);
+            } else {
+                if (t.right == null) {
+                    t.right = new TreeNode(intData, value, t);
+                    return;
+                }
+                addUtil(t.right, t, value);
+            }
+        }
+    }
+
+    public int str2int(String str){
+        if (str.length() == 0)
+            return 0;
+        else {
+            int res = 0;
+            for (int i = 0; i < str.length(); i++)
+                res += str.charAt(i);
+            return res;
         }
     }
 
@@ -138,6 +187,8 @@ public class BTree {
         int height = maxHeight(head);
         for (int i = 1; i <= height; i++)
             result += "" + i + ": " + levelOrderUtil(head, i) + "\n";
+        if (result.isEmpty())
+            return "The tree is empty";
         return result;
     }
 
@@ -145,7 +196,7 @@ public class BTree {
         if (t == null)
             return "";
         if (lvl == 1)
-            return t.data + " ";
+            return t.dataString + " ";
         else {
             return levelOrderUtil(t.left, lvl-1) + levelOrderUtil(t.right, lvl-1);
         }
